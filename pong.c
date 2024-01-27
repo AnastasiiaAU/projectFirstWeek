@@ -20,7 +20,7 @@ int main() {
     char pole[][] = table();
     char comand;
     while (1) {
-        scanf();
+        scanf(); //дописать как сканировать ввод
         if (comand == ' ' || comand == 'Z' || comand == 'A' || comand == 'K' || comand == 'M') {
             // действия при правильной активации
 
