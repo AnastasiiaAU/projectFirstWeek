@@ -34,10 +34,10 @@ void table() {
         for (int column = 0; column < 80; column++){
             if (line == 12 && column == 39) { // координата начальная шарика -> 14,40
                 background [line][column] = 'O';
-            } else if (column == 0 || column == 79 || column == 39) {
-                background [line][column] = 'x';
+            } else if ((column == 0 || column == 79 || column == 39) && (line > 0 && line < 24)) {
+                background [line][column] = '|';
             } else if ((line == 0 || line == 24) && (column % 2 == 0)) {
-                background [line][column] = 'x';
+                background [line][column] = '-';
             } else if ((line == 11 || line == 12 || line == 13) && (column == 6 || column == 73)) {
                 background [line][column] = '|';
             } else {
