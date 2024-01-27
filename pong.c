@@ -17,12 +17,19 @@ Space Bar для пропуска действия на очередном ша�
 *char table();
 
 int main() {
-    table();
+    char pole[][] = table();
     char comand;
     while (1) {
         scanf();
         if (comand == ' ' || comand == 'Z' || comand == 'A' || comand == 'K' || comand == 'M') {
             // действия при правильной активации
+
+            for (int i = 0; i < 25; i++) { // вывод массива
+                for (int j = 0; j < 80; j++) {
+                    printf("%c", background[i][j]);
+                }
+                printf("\n");
+            }
         } else {
             continue;
         }
@@ -49,12 +56,6 @@ int main() {
         }
     }
     return background;
-    // for (int i = 0; i < 25; i++) {
-    //     for (int j = 0; j < 80; j++) {
-    //         printf("%c", background[i][j]);
-    //     }
-    //     printf("\n");
-    // }
 }
 
 // функция передвижения ракеток
