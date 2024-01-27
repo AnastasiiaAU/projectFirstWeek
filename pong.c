@@ -14,21 +14,24 @@ Space Bar для пропуска действия на очередном ша�
 
 #include <stdio.h>
 
-void table();
+*char table();
 
 int main() {
     table();
-    // char table [] = table();
-    // for (int i = 0; i < 28; i++) {
-    //     for (int j = 0; j < 82; j++) {
-    //         printf("%c", table[i][j]);
-    //     }
-    // }
+    char comand;
+    while (1) {
+        scanf();
+        if (comand == ' ' || comand == 'Z' || comand == 'A' || comand == 'K' || comand == 'M') {
+            // действия при правильной активации
+        } else {
+            continue;
+        }
+    }
     return 0;
 }
 
 // вывод игрового поля
-void table() {
+*char table() {
     char background [25][80]; // создание массива с фоном
     for (int line = 0; line < 25; line++){ //формирование базового изображения
         for (int column = 0; column < 80; column++){
@@ -45,34 +48,39 @@ void table() {
             }
         }
     }
-    
-    for (int i = 0; i < 25; i++) {
-        for (int j = 0; j < 80; j++) {
-            printf("%c", background[i][j]);
+    return background;
+    // for (int i = 0; i < 25; i++) {
+    //     for (int j = 0; j < 80; j++) {
+    //         printf("%c", background[i][j]);
+    //     }
+    //     printf("\n");
+    // }
+}
+
+// функция передвижения ракеток
+int rocket (char input) {
+    if (input == 'A' || input == 'Z' || input == 'K' || input == 'M') {
+        int high, low;
+        if (input == 'A' || input == 'Z') {
+            // нахождение координат левой ракетки
+                
+            if (input == 'A') { //вверх
+                if 
+            } else if (input == 'Z') { //вниз
+
+            }
+        } else {
+            // нахождение координат правой ракетки
+
+            if (input == 'K') { //вверх
+
+            } else { //вниз
+
+            }
         }
-        printf("\n");
+    } else {
+        // прописать действия в случае иной команды
     }
 }
 
-// // функция передвижения меча
-// int ball (int numb) { // от 1 до 4
-//     if (numb == 1) {
-//         //
-//         return 1;
-//     } else if (numb == 2) {
-//         //
-//         return 1;
-//     } else if (numb == 3){
-//         //
-//         return 1;
-//     } else if (numb == 4){
-//         //
-//         return 1;
-//     }
-//     return 0;
-// }
-
-// // функция передвижения ракетки
-// int rocket (int numb) {
-//     ...
-// }
+// функция передвижения мяча
