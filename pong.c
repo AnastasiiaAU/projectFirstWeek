@@ -15,21 +15,25 @@ Space Bar для пропуска действия на очередном ша�
 #include <stdio.h>
 
 *char table();
+*char rocket(char input, char [] mas)
 
 int main() {
     char pole[][] = table();
-    char comand;
+    char comand, n;
     while (1) {
-        scanf(); //дописать как сканировать ввод
-        if (comand == ' ' || comand == 'Z' || comand == 'A' || comand == 'K' || comand == 'M') {
-            // действия при правильной активации
-
-            for (int i = 0; i < 25; i++) { // вывод массива
-                for (int j = 0; j < 80; j++) {
-                    printf("%c", background[i][j]);
+        if (scanf("%c", &comand, &n) && n == '\n') {
+            if (comand == ' ' || comand == 'Z' || comand == 'A' || comand == 'K' || comand == 'M') {
+                // действия при правильной активации
+                
+                for (int i = 0; i < 25; i++) { // вывод массива
+                    for (int j = 0; j < 80; j++) {
+                        printf("%c", background[i][j]);
+                    }
+                    printf("\n");
                 }
-                printf("\n");
-            }
+            } else {
+                continue;
+            }   
         } else {
             continue;
         }
@@ -59,29 +63,70 @@ int main() {
 }
 
 // функция передвижения ракеток
-int rocket (char input) {
+*char rocket(char input, char [] mas) {
     if (input == 'A' || input == 'Z' || input == 'K' || input == 'M') {
-        int high, low;
+        int high = 0, low = 0; // high - верхняя точка ракетки, low - нижняя
         if (input == 'A' || input == 'Z') {
             // нахождение координат левой ракетки
-                
+                for (int i = 1; i < 24; i++)
+                {
+                    if (mas[i][6] == '|' && high == 0) {
+                        high = i;
+                    } else if (mas[i][6] == '|') {
+                        low = i;
+                    }
+                }
             if (input == 'A') { //вверх
-                if 
+                if ((high - 1) != '-') {
+                    mas[low][6] = ' ';
+                    mas[high-1][6] = '|';
+                    return mas;
+                } else {
+                    return mas;
+                }
             } else if (input == 'Z') { //вниз
-
+                if ((low + 1) != '-') {
+                    mas[high][6] = ' ';
+                    mas[low+1][6] = '|';
+                    return mas;
+                } else {
+                    return mas;
+                }
             }
         } else {
             // нахождение координат правой ракетки
-
+            for (int i = 1; i < 24; i++)
+                {
+                    if (mas[i][73] == '|' && high == 0) {
+                        high = i;
+                    } else if (mas[i][73] == '|') {
+                        low = i;
+                    }
+                }
             if (input == 'K') { //вверх
-
+                if ((high - 1) != '-') {
+                    mas[low][73] = ' ';
+                    mas[high-1][73] = '|';
+                    return mas;
+                } else {
+                    return mas;
+                }
             } else { //вниз
-
+                if ((low + 1) != '-') {
+                    mas[high][6] = ' ';
+                    mas[low+1][6] = '|';
+                    return mas;
+                } else {
+                    return mas;
+                }
             }
         }
     } else {
-        // прописать действия в случае иной команды
+        return mas;
     }
 }
 
 // функция передвижения мяча
+*char ball() {
+
+}
