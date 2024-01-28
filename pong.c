@@ -4,8 +4,9 @@ char* table();
 char* rocket(char input, char *mas);
 char* rock_move(char *mas, char storona, char input);
 char* ball(char *mas, char highlow, char rightltft);
-char* ball_move(char *mas, char highlow, char rightltft, int x, int y);
-int goals (char *mas);
+char* ball_move(char *mas, char highlow, char rightltft, int x, int y, int st);
+int goals(char *mas);
+char chengedir(char simb);
 
 int main() {
     char comand, n; // comand - пользовательский ввод команд, n - переменная для проверки ввода одного символа
@@ -24,7 +25,7 @@ int main() {
                     rocket(comand, pole);
                     ball(pole, hl, rl);
                 }
-                if (goals(pole) == 0) { // был ли гол в целом?
+                if (goals(pole) == 0) { // был ли гол в целом? => нет (else -> был)
                     for (int i = 0; i < 25; i++) { // вывод массива
                         for (int j = 0; j < 80; j++) {
                             printf("%c", pole[i][j]);
@@ -140,17 +141,36 @@ char* ball(char *mas, char highlow, char rightltft) {
         }
     }
     if (ball_y == 39) { // если мяч находится по центру
-
+        
     } else if ((ball_y == 38 && rightltft == '+') || (ball_y == 40 && rightltft == '-')){ // если должен попасть на линию по середине 
 
-    } else {
-
+    } else { // в любом другом месте поля
+        int stolk = stolknovenie(mas, highlow, rightltft, ball_x, ball_y);
+        if (stolk == 0) { // если не столкнется ни с чем
+            ball_move(mas, highlow, rightltft, ball_x, ball_y, stolk);
+            return mas;
+        } else if (stolk == 1) { // если будет столкновение
+            ball_move(mas, highlow, rightltft, ball_x, ball_y, stolk);
+            // меняем направление и проверяем на столкновение опять
+            
+            return mas;
+        }
     }
 
 }
+// смена направления движения
+char chengedir(char simb) {
+    if (simb == '-') {
+        return '+';
+    } else {
+        return '-';
+    }
+}
+
+
 
 // проверка на столкновение с ракеткой/стенкой (верхней и нижней) +
-int stolknovenie (char *mas, char highlow, char rightltft, int x, int y) {
+int stolknovenie(char *mas, char highlow, char rightltft, int x, int y) {
     if ((x == 23 && highlow == '-') || (x == 1 && highlow == '+')) {  // проверка на столкновение со стенками
         return 1;
     } else if ((y == 72 || y == 7)){ //если мяч рядом с маршрутом ракетки 
@@ -194,8 +214,8 @@ int stolknovenie (char *mas, char highlow, char rightltft, int x, int y) {
 
 
 // непосредственно перемещение мяча по полю 
-char* ball_move(char *mas, char highlow, char rightltft, int x, int y) {
-    if (stolknovenie(mas, highlow, rightltft, x, y) == 0) { //если столкнвения не предвидится
+char* ball_move(char *mas, char highlow, char rightltft, int x, int y, int st) {
+    if (st == 0) { //если столкнвения не предвидится
         if (highlow == "+") {
             if (rightltft == "+") { //движение выше-правее
                 // проверяем на то, не вылетит ли за границы мяч при перестановке
@@ -221,7 +241,7 @@ char* ball_move(char *mas, char highlow, char rightltft, int x, int y) {
 }
 
 // проверка голов +
-int goals (char *mas) {
+int goals(char *mas) {
     int ball_y = 0;
     // поиск мяча
     for (int i=1; i < 24; i++) {
