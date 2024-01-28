@@ -1,22 +1,24 @@
 #include <stdio.h>
-
-char* table();
+void printerarr (char mas [], int ind);
 char* rocket(char input, char *mas);
 char* rock_move(char *mas, char storona, char input);
 char* ball(char *mas, char highlow, char rightltft);
+char chengedir(char simb);
+int stolknovenie(char *mas, char highlow, char rightltft, int x, int y);
 char* ball_move(char *mas, char highlow, char rightltft, int x, int y, int st);
 int goals(char *mas);
-char chengedir(char simb);
 void clear(void);
+
 
 int main() {
     char comand, n; // comand - пользовательский ввод команд, n - переменная для проверки ввода одного символа
     int schet [] = {0, 0}; // счет
     int win_numb = 0; //победитель
     char hl = '-', rl = '-'; // движение мяча
-    char first[] = '                                     PINPONG                                    '; 
-    char second [] = '             PLAYER 1   0                             PLAYER 2   0              '; // 24 и 64 индексы
-    char counter [2][80] = {first, second};
+    char first[] = "                                     PINPONG                                    "; 
+    char second [] = "             PLAYER 1   0                             PLAYER 2   0              "; // 24 и 64 индексы
+    char counter [2][80] = {*first, *second};
+    printf("двадцать первая строка");
     while (win_numb == 0) {
         char pole[25][80];// инициализация игрового поля 
         for (int line = 0; line < 25; line++){ //формирование базового изображения
@@ -36,28 +38,28 @@ int main() {
         }
         counter[1][24] = schet[0];
         counter[1][64] = schet[1];
-        printer(counter, 1);
-        printer(pole, 2);
+        printerarr(counter, 1);
+        printerarr(pole, 2);
         while(goals(pole) == 0){
             counter[1][24] = schet[0];
             counter[1][64] = schet[1];
-            if (scanf("%c", &comand, &n) && n == '\n') {
+            if (scanf('%c', &comand, &n) && n == '\n') {
                 if (comand == ' ' || comand == 'Z' || comand == 'A' || comand == 'K' || comand == 'M') {
                     // действия при правильной активации
                     if (comand == ' ') {
                         ball(pole, hl, rl); // обратить внимание
-                        printer(counter, 1);
-                        printer(pole, 2);
+                        printerarr(counter, 1);
+                        printerarr(pole, 2);
                     } else {
                         rocket(comand, pole);// обратить внимание
                         ball(pole, hl, rl); // обратить внимание
-                        printer(counter, 1);
-                        printer(pole, 2);
+                        printerarr(counter, 1);
+                        printerarr(pole, 2);
                     }
                     if (goals(pole) == 0) { // был ли гол в целом? => нет (else -> был)
                         clear();
-                        printer(counter, 1);
-                        printer(pole, 2);
+                        printerarr(counter, 1);
+                        printerarr(pole, 2);
                     } else {
                         if (goals(pole) == 1) {
                             schet[0] += 1; 
@@ -86,26 +88,25 @@ int main() {
 }
 
 // вывод
-void printer (char mas [], int ind){
+void printerarr (char mas [], int ind) {
     if (ind == 1) {
         for (int i = 0; i < 2; i++){
             for (int j = 0; j < 80; j++)
             {
-                printf("%d", mas[i][&j]);
+                printf('%с', &mas[i][&j]);
             }
-            printf('\n');   
+            printf("\n");   
         }
     } else {
         for (int i = 0; i < 25; i++){
             for (int j = 0; j < 80; j++)
             {
-                printf("%d", mas[i][&j]);
+                printf('%с', &mas[i][&j]);
             }
             printf('\n');   
         }
     }
 }
-
 
 // функция передвижения ракеток 
 char* rocket(char input, char *mas) {
@@ -233,8 +234,8 @@ int stolknovenie(char *mas, char highlow, char rightltft, int x, int y) {
 // непосредственно перемещение мяча по полю 
 char* ball_move(char *mas, char highlow, char rightltft, int x, int y, int st) {
     if (st == 0) { //если столкнвения не предвидится
-        if (highlow == "+") {
-            if (rightltft == "+") { //движение выше-правее
+        if (highlow == '+') {
+            if (rightltft == '+') { //движение выше-правее
                 if (y == 39) {
                     mas[x-1][&y+1] = mas[x][&y];
                     mas[x][&y] = '|';
@@ -244,7 +245,7 @@ char* ball_move(char *mas, char highlow, char rightltft, int x, int y, int st) {
                     mas[x][&y] = ' ';
                     return mas;
                 }
-            } else if (rightltft == "-") { //движение выше-левее
+            } else if (rightltft == '-') { //движение выше-левее
                 if (y == 39) {
                     mas[x-1][&y-1] = mas[x][&y];
                     mas[x][&y] = '|';
@@ -255,8 +256,8 @@ char* ball_move(char *mas, char highlow, char rightltft, int x, int y, int st) {
                     return mas;
                 }
             }
-        } else if (highlow == "-") { 
-            if (rightltft == "+") { //движение ниже-правее
+        } else if (highlow == '-') { 
+            if (rightltft == '+') { //движение ниже-правее
                 if (y == 39) {
                     mas[x+1][&y+1] = mas[x][&y];
                     mas[x][&y] = '|';
@@ -266,7 +267,7 @@ char* ball_move(char *mas, char highlow, char rightltft, int x, int y, int st) {
                     mas[x][&y] = ' ';
                     return mas;
                 }
-            } else if(rightltft == "-") { //движение ниже-левее
+            } else if(rightltft == '-') { //движение ниже-левее
                 if (y == 39) {
                     mas[x+1][&y-1] = mas[x][&y];
                     mas[x][&y] = '|';
