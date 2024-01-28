@@ -3,15 +3,18 @@
 char* table();
 char* rocket(char input, char *mas);
 char* rock_move(char *mas, char storona, char input);
+char* ball(char *mas, char highlow, char rightltft);
+char* ball_move(char *mas, char highlow, char rightltft, int x, int y);
 int goals (char *mas);
 
 int main() {
-    char pole[25][80] = table(); // инициализация игрового поля
     char comand, n; // comand - пользовательский ввод команд, n - переменная для проверки ввода одного символа
     int schet [] = {0, 0}; // счет
     int win_numb = 0; //победитель
-    char hl, rl;
+    char hl = '-', rl = '+'; // движение мяча
+                                                                                                                                                        // добавить вывод счета над таблицей
     while (win_numb == 0) {
+        char pole[25][80] = table(); // инициализация игрового поля
         if (scanf("%c", &comand, &n) && n == '\n') {
             if (comand == ' ' || comand == 'Z' || comand == 'A' || comand == 'K' || comand == 'M') {
                 // действия при правильной активации
@@ -41,7 +44,7 @@ int main() {
                             win_numb = 2;
                         }
                         break;
-                }
+                    }
                 }
             } else {
                 continue;
@@ -136,9 +139,64 @@ char* ball(char *mas, char highlow, char rightltft) {
             }
         }
     }
+    if (ball_y == 39) { // если мяч находится по центру
+
+    } else if ((ball_y == 38 && rightltft == '+') || (ball_y == 40 && rightltft == '-')){ // если должен попасть на линию по середине 
+
+    }
+
+}
+
+// проверка на столкновение с ракеткой/стенкой (верхней и нижней) +
+int stolknovenie (char *mas, char highlow, char rightltft, int x, int y) {
+    if ((x == 23 && highlow == '-') || (x == 1 && highlow == '+')) {  // проверка на столкновение со стенками
+        return 1;
+    } else if ((y == 72 || y == 7)){ //если мяч рядом с маршрутом ракетки 
+        if (y==72 && rightltft == '+') {
+            //проверяем есть ли ракетка
+            if (highlow == '+') {
+                if (mas[x-1][&y+1] == '|') {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } else if (highlow == '-') {
+                if (mas[x+1][&y+1] == '|') {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        } else if (y == 7 && rightltft == '-') {
+            //проверяем есть ли ракетка
+            if (highlow == '+') {
+                if (mas[x-1][&y-1] == '|') {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } else if (highlow == '-') {
+                if (mas[x+1][&y-1] == '|') {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        } else {
+            return 0;
+        }
+    } else {
+        return 0;
+    }
+}
+
+
+// непосредственно перемещение мяча по полю 
+char* ball_move(char *mas, char highlow, char rightltft, int x, int y) {
+    
     if (highlow == "+") {
         if (rightltft == "+") { //движение выше-правее
-            // дописать
+                
         } else if (rightltft == "-") { //движение выше-левее
 
         }
@@ -153,7 +211,7 @@ char* ball(char *mas, char highlow, char rightltft) {
     }
 }
 
-// проверка голов
+// проверка голов +
 int goals (char *mas) {
     int ball_y = 0;
     // поиск мяча
