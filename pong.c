@@ -7,12 +7,14 @@ char* ball(char *mas, char highlow, char rightltft);
 char* ball_move(char *mas, char highlow, char rightltft, int x, int y, int st);
 int goals(char *mas);
 char chengedir(char simb);
+void clear(void);
 
 int main() {
     char comand, n; // comand - пользовательский ввод команд, n - переменная для проверки ввода одного символа
     int schet [] = {0, 0}; // счет
     int win_numb = 0; //победитель
     char hl = '-', rl = '-'; // движение мяча
+    char pole[25][80] = table(); // инициализация игрового поля
                                                                                                                                                         // добавить вывод счета над таблицей и момент переключения направления движения мяча
     while (win_numb == 0) {
         char pole[25][80] = table(); // инициализация игрового поля
@@ -47,6 +49,7 @@ int main() {
                         break;
                     }
                 }
+                clear();
             } else {
                 continue;
             }   
@@ -92,7 +95,7 @@ char* rocket(char input, char *mas) {
     return mas;
 }
 
-// движение рокеток общие действия +
+// движение ракеток общие действия +
 char* rock_move(char *mas, char storona, char input) {
     int numb, high = 0, low = 0;;
     if (storona == 'r') {
@@ -126,7 +129,7 @@ char* rock_move(char *mas, char storona, char input) {
     }
 }
 
-// функция передвижения мяча
+// функция передвижения мяча +
 char* ball(char *mas, char highlow, char rightltft) {
     int ball_x = 0;
     int ball_y = 0;
@@ -140,25 +143,16 @@ char* ball(char *mas, char highlow, char rightltft) {
             }
         }
     }
-    if (ball_y == 39) { // если мяч находится по центру
-        
-    } else if ((ball_y == 38 && rightltft == '+') || (ball_y == 40 && rightltft == '-')){ // если должен попасть на линию по середине 
-
-    } else { // в любом другом месте поля
-        int stolk = stolknovenie(mas, highlow, rightltft, ball_x, ball_y);
-        if (stolk == 0) { // если не столкнется ни с чем
-            ball_move(mas, highlow, rightltft, ball_x, ball_y, stolk);
-            return mas;
-        } else if (stolk == 1) { // если будет столкновение
-            ball_move(mas, highlow, rightltft, ball_x, ball_y, stolk);
-            // меняем направление и проверяем на столкновение опять
-            
-            return mas;
-        }
+    if (stolknovenie(mas, highlow, rightltft, ball_x, ball_y) == 0) {
+        mas = ball_move(mas, highlow, rightltft, ball_x, ball_y, 0);
+        return mas;
+    } else {
+        mas = ball_move(mas, highlow, rightltft, ball_x, ball_y, 1);
+        return mas;
     }
-
 }
-// смена направления движения
+
+// смена направления движения +
 char chengedir(char simb) {
     if (simb == '-') {
         return '+';
@@ -166,8 +160,6 @@ char chengedir(char simb) {
         return '-';
     }
 }
-
-
 
 // проверка на столкновение с ракеткой/стенкой (верхней и нижней) +
 int stolknovenie(char *mas, char highlow, char rightltft, int x, int y) {
@@ -212,25 +204,36 @@ int stolknovenie(char *mas, char highlow, char rightltft, int x, int y) {
     }
 }
 
-
 // непосредственно перемещение мяча по полю 
 char* ball_move(char *mas, char highlow, char rightltft, int x, int y, int st) {
     if (st == 0) { //если столкнвения не предвидится
         if (highlow == "+") {
             if (rightltft == "+") { //движение выше-правее
-                // проверяем на то, не вылетит ли за границы мяч при перестановке
+                if (y+1 == 39) {
 
+                } else {
+
+                }
             } else if (rightltft == "-") { //движение выше-левее
+                if (y-1 == 39) {
 
-
+                } else {
+                    
+                }
             }
         } else if (highlow == "-") { 
             if (rightltft == "+") { //движение ниже-правее
+                if (y+1 == 39) {
 
-
+                } else {
+                    
+                }
             } else if(rightltft == "-") { //движение ниже-левее
+                if (y-1 == 39) {
 
-
+                } else {
+                    
+                }
             }
         } else {
             return mas;
@@ -261,3 +264,5 @@ int goals(char *mas) {
         return 0;
     }
 }
+
+void clear(void) {printf("\33[0d\33[2J");}
