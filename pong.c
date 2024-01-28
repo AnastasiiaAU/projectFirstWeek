@@ -24,13 +24,20 @@ int main() {
         if (scanf("%c", &comand, &n) && n == '\n') {
             if (comand == ' ' || comand == 'Z' || comand == 'A' || comand == 'K' || comand == 'M') {
                 // действия при правильной активации
-                
+                if (comand == ' ') {
+                    // движение мяча
+                } else {
+                    table = rocket(comand, table);
+                    // table = ball();
+                }
+
                 for (int i = 0; i < 25; i++) { // вывод массива
                     for (int j = 0; j < 80; j++) {
                         printf("%c", background[i][j]);
                     }
                     printf("\n");
                 }
+                // проверка счета 
             } else {
                 continue;
             }   
