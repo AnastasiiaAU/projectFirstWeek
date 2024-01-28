@@ -82,7 +82,7 @@ char* table() {
     return background;
 }
 
-// функция передвижения ракеток +
+// функция передвижения ракеток 
 char* rocket(char input, char *mas) {
     int high = 0, low = 0; // high - верхняя точка ракетки, low - нижняя
     if (input == 'A' || input == 'Z') {
@@ -95,7 +95,7 @@ char* rocket(char input, char *mas) {
     return mas;
 }
 
-// движение ракеток общие действия +
+// движение ракеток общие действия 
 char* rock_move(char *mas, char storona, char input) {
     int numb, high = 0, low = 0;;
     if (storona == 'r') {
@@ -129,7 +129,7 @@ char* rock_move(char *mas, char storona, char input) {
     }
 }
 
-// функция передвижения мяча +
+// функция передвижения мяча 
 char* ball(char *mas, char highlow, char rightltft) {
     int ball_x = 0;
     int ball_y = 0;
@@ -152,7 +152,7 @@ char* ball(char *mas, char highlow, char rightltft) {
     }
 }
 
-// смена направления движения +
+// смена направления движения 
 char chengedir(char simb) {
     if (simb == '-') {
         return '+';
@@ -161,10 +161,11 @@ char chengedir(char simb) {
     }
 }
 
-// проверка на столкновение с ракеткой/стенкой (верхней и нижней) +
+// проверка на столкновение с ракеткой -> 1,  стенкой -> 2 
 int stolknovenie(char *mas, char highlow, char rightltft, int x, int y) {
     if ((x == 23 && highlow == '-') || (x == 1 && highlow == '+')) {  // проверка на столкновение со стенками
-        return 1;
+        if (x == 23) return 3;
+        else return 2;
     } else if ((y == 72 || y == 7)){ //если мяч рядом с маршрутом ракетки 
         if (y==72 && rightltft == '+') {
             //проверяем есть ли ракетка
@@ -209,41 +210,163 @@ char* ball_move(char *mas, char highlow, char rightltft, int x, int y, int st) {
     if (st == 0) { //если столкнвения не предвидится
         if (highlow == "+") {
             if (rightltft == "+") { //движение выше-правее
-                if (y+1 == 39) {
-
+                if (y == 39) {
+                    mas[x-1][&y+1] = mas[x][&y];
+                    mas[x][&y] = '|';
+                    return mas;
                 } else {
-
+                    mas[x-1][&y+1] = mas[x][&y];
+                    mas[x][&y] = ' ';
+                    return mas;
                 }
             } else if (rightltft == "-") { //движение выше-левее
-                if (y-1 == 39) {
-
+                if (y == 39) {
+                    mas[x-1][&y-1] = mas[x][&y];
+                    mas[x][&y] = '|';
+                    return mas;
                 } else {
-                    
+                    mas[x-1][&y-1] = mas[x][&y];
+                    mas[x][&y] = ' ';
+                    return mas;
                 }
             }
         } else if (highlow == "-") { 
             if (rightltft == "+") { //движение ниже-правее
-                if (y+1 == 39) {
-
+                if (y == 39) {
+                    mas[x+1][&y+1] = mas[x][&y];
+                    mas[x][&y] = '|';
+                    return mas;
                 } else {
-                    
+                    mas[x+1][&y+1] = mas[x][&y];
+                    mas[x][&y] = ' ';
+                    return mas;
                 }
             } else if(rightltft == "-") { //движение ниже-левее
-                if (y-1 == 39) {
-
+                if (y == 39) {
+                    mas[x+1][&y-1] = mas[x][&y];
+                    mas[x][&y] = '|';
+                    return mas;
                 } else {
-                    
+                    mas[x+1][&y-1] = mas[x][&y];
+                    mas[x][&y] = ' ';
+                    return mas;
                 }
             }
         } else {
             return mas;
         }
     } else { // если будет столкновение
-        
+        if (highlow == "+") {
+            if (rightltft == "+") { //движение выше-правее
+                if (y == 39) {
+                    highlow = chengedir(highlow);
+                    st = stolknovenie(mas, highlow, rightltft, x, y);
+                    return ball_move(mas, highlow, rightltft, x, y, st);
+                } else {
+                    if (st == 1) {
+                        rightltft = chengedir(rightltft);
+                        st = stolknovenie(mas, highlow, rightltft, x, y);
+                        return ball_move(mas, highlow, rightltft, x, y, st);
+                    } else if (st = 2) {
+                        highlow = chengedir(highlow);
+                        st = stolknovenie(mas, highlow, rightltft, x, y);
+                        return ball_move(mas, highlow, rightltft, x, y, st);
+                    } else return mas;
+                }
+            } else if (rightltft == "-") { //движение выше-левее
+                if (y == 39) {
+                    highlow = chengedir(highlow);
+                    st = stolknovenie(mas, highlow, rightltft, x, y);
+                    return ball_move(mas, highlow, rightltft, x, y, st);
+                } else {
+                    if (st == 1) {
+                        rightltft = chengedir(rightltft);
+                        st = stolknovenie(mas, highlow, rightltft, x, y);
+                        return ball_move(mas, highlow, rightltft, x, y, st);
+                    } else if (st = 2) {
+                        highlow = chengedir(highlow);
+                        st = stolknovenie(mas, highlow, rightltft, x, y);
+                        return ball_move(mas, highlow, rightltft, x, y, st);
+                    } else return mas;
+                }
+            }
+        } else if (highlow == "-") { 
+            if (rightltft == "+") { //движение ниже-правее
+                if (y == 39) {
+                    if (y == 39) {
+                    highlow = chengedir(highlow);
+                    st = stolknovenie(mas, highlow, rightltft, x, y);
+                    return ball_move(mas, highlow, rightltft, x, y, st);
+                } else {
+                    if (st == 1) {
+                        rightltft = chengedir(rightltft);
+                        st = stolknovenie(mas, highlow, rightltft, x, y);
+                        return ball_move(mas, highlow, rightltft, x, y, st);
+                    } else if (st = 2) {
+                        highlow = chengedir(highlow);
+                        st = stolknovenie(mas, highlow, rightltft, x, y);
+                        return ball_move(mas, highlow, rightltft, x, y, st);
+                    } else return mas;
+                }
+                } else {
+                    if (y == 39) {
+                        highlow = chengedir(highlow);
+                        st = stolknovenie(mas, highlow, rightltft, x, y);
+                        return ball_move(mas, highlow, rightltft, x, y, st);
+                    } else {
+                        if (st == 1) {
+                            rightltft = chengedir(rightltft);
+                            st = stolknovenie(mas, highlow, rightltft, x, y);
+                            return ball_move(mas, highlow, rightltft, x, y, st);
+                        } else if (st = 2) {
+                            highlow = chengedir(highlow);
+                            st = stolknovenie(mas, highlow, rightltft, x, y);
+                            return ball_move(mas, highlow, rightltft, x, y, st);
+                        } else return mas;
+                    }
+                }
+            } else if(rightltft == "-") { //движение ниже-левее
+                if (y == 39) {
+                    if (y == 39) {
+                    highlow = chengedir(highlow);
+                    st = stolknovenie(mas, highlow, rightltft, x, y);
+                    return ball_move(mas, highlow, rightltft, x, y, st);
+                } else {
+                    if (st == 1) {
+                        rightltft = chengedir(rightltft);
+                        st = stolknovenie(mas, highlow, rightltft, x, y);
+                        return ball_move(mas, highlow, rightltft, x, y, st);
+                    } else if (st = 2) {
+                        highlow = chengedir(highlow);
+                        st = stolknovenie(mas, highlow, rightltft, x, y);
+                        return ball_move(mas, highlow, rightltft, x, y, st);
+                    } else return mas;
+                }
+                } else {
+                    if (y == 39) {
+                        highlow = chengedir(highlow);
+                        st = stolknovenie(mas, highlow, rightltft, x, y);
+                        return ball_move(mas, highlow, rightltft, x, y, st);
+                    } else {
+                        if (st == 1) {
+                            rightltft = chengedir(rightltft);
+                            st = stolknovenie(mas, highlow, rightltft, x, y);
+                            return ball_move(mas, highlow, rightltft, x, y, st);
+                        } else if (st = 2) {
+                            highlow = chengedir(highlow);
+                            st = stolknovenie(mas, highlow, rightltft, x, y);
+                            return ball_move(mas, highlow, rightltft, x, y, st);
+                        } else return mas;
+                    }
+                }
+            }
+        } else {
+            return mas;
+        }
     }
 }
 
-// проверка голов +
+// проверка голов 
 int goals(char *mas) {
     int ball_y = 0;
     // поиск мяча
