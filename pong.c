@@ -17,36 +17,45 @@ Space Bar для пропуска действия на очередном ша�
 char* table();
 char* rocket(char input, char *mas);
 char* rock_move(char *mas, char storona, char input);
+int goals (char *mas);
 
 int main() {
     char pole[25][80] = table(); // инициализация игрового поля
     char comand, n; // comand - пользовательский ввод команд, n - переменная для проверки ввода одного символа
     int schet [] = {0, 0}; // счет
     int win_numb = 0; //победитель
-    while (1) {
+    char hl, rl;
+    while (win_numb == 0) {
         if (scanf("%c", &comand, &n) && n == '\n') {
             if (comand == ' ' || comand == 'Z' || comand == 'A' || comand == 'K' || comand == 'M') {
                 // действия при правильной активации
                 if (comand == ' ') {
-                    // ball();
+                    ball(pole, hl, rl);
                 } else {
                     rocket(comand, pole);
-                    // ball();
+                    ball(pole, hl, rl);
                 }
-
-                for (int i = 0; i < 25; i++) { // вывод массива
-                    for (int j = 0; j < 80; j++) {
-                        printf("%c", pole[i][j]);
-                    }
+                if (goals(pole) == 0) { // был ли гол в целом?
+                    for (int i = 0; i < 25; i++) { // вывод массива
+                        for (int j = 0; j < 80; j++) {
+                            printf("%c", pole[i][j]);
+                        }
                     printf("\n");
-                }
-                if (schet[0] == 21 || schet[1] == 21) {
-                    if (schet[0] == 21) {
-                        win_numb = 1;
-                    } else {
-                        win_numb = 2;
                     }
-                    break;
+                } else {
+                    if (goals(pole) == 1) {
+                        schet[0] += 1;
+                    } else if (goals(pole) == 2) {
+                        schet[1] += 1;
+                    }
+                    if (schet[0] == 21 || schet[1] == 21) {
+                        if (schet[0] == 21) {
+                            win_numb = 1;
+                        } else {
+                            win_numb = 2;
+                        }
+                        break;
+                }
                 }
             } else {
                 continue;
@@ -128,6 +137,54 @@ char* rock_move(char *mas, char storona, char input) {
 }
 
 // функция передвижения мяча
-char* ball() {
+char* ball(char *mas, char highlow, char rightltft) {
+    int ball_x = 0;
+    int ball_y = 0;
+    // поиск мяча
+    for (int i=1; i < 24; i++) {
+        for (int j = 1; j < 79; j++)
+        {
+            if (mas[i][&j] == 'O') {
+                ball_x = i;
+                ball_y = j;
+            }
+        }
+    }
+    if (highlow == "+") {
+        if (rightltft == "+") { //движение выше-правее
+            // дописать
+        } else if (rightltft == "-") { //движение выше-левее
 
+        }
+    } else if (highlow == "-") { 
+        if (rightltft == "+") { //движение ниже-правее
+
+        } else if(rightltft == "-") { //движение ниже-левее
+
+        }
+    } else {
+        return mas;
+    }
+}
+
+// проверка голов
+int goals (char *mas) {
+    int ball_y = 0;
+    // поиск мяча
+    for (int i=1; i < 24; i++) {
+        for (int j = 1; j < 79; j++)
+        {
+            if (mas[i][&j] == 'O') {
+                ball_y = j;
+            }
+        }
+    }
+    // проверка гола
+    if (ball_y == 1) {
+        return 2; // забили первому
+    } else if (ball_y == 78) {
+        return 1; // забили второму игроку
+    } else {
+        return 0;
+    }
 }
