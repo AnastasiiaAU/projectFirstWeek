@@ -14,11 +14,11 @@ int main() {
     int schet [] = {0, 0}; // счет
     int win_numb = 0; //победитель
     char hl = '-', rl = '-'; // движение мяча
-    
-                                                                                                                                                       // добавить вывод счета над таблицей и проверить места, в которых чистится поле
+    char first[] = '                                     PINPONG                                    '; 
+    char second [] = '             PLAYER 1   0                             PLAYER 2   0              '; // 24 и 64 индексы
+    char counter [2][80] = {first, second};
     while (win_numb == 0) {
-        char pole[25][80];// инициализация игрового поля // ОШИБКА ИНИЦИАЛИЗАЦИИ МАССИВА
-        
+        char pole[25][80];// инициализация игрового поля 
         for (int line = 0; line < 25; line++){ //формирование базового изображения
             for (int column = 0; column < 80; column++){
                 if (line == 12 && column == 39) { // координата начальная шарика -> 14,40
@@ -34,33 +34,36 @@ int main() {
                 }
             }
         }
-        while(goals(pole) == 0){ // инициализация игрового поля
+        counter[1][24] = schet[0];
+        counter[1][64] = schet[1];
+        printer(counter, 1);
+        printer(pole, 2);
+        while(goals(pole) == 0){
+            counter[1][24] = schet[0];
+            counter[1][64] = schet[1];
             if (scanf("%c", &comand, &n) && n == '\n') {
                 if (comand == ' ' || comand == 'Z' || comand == 'A' || comand == 'K' || comand == 'M') {
                     // действия при правильной активации
                     if (comand == ' ') {
                         ball(pole, hl, rl); // обратить внимание
+                        printer(counter, 1);
+                        printer(pole, 2);
                     } else {
                         rocket(comand, pole);// обратить внимание
                         ball(pole, hl, rl); // обратить внимание
+                        printer(counter, 1);
+                        printer(pole, 2);
                     }
                     if (goals(pole) == 0) { // был ли гол в целом? => нет (else -> был)
                         clear();
-                        for (int i = 0; i < 25; i++) { // вывод массива
-                            for (int j = 0; j < 80; j++) {
-                                printf("%c", pole[i][j]);
-                            }
-                        printf("\n");
-                        }
+                        printer(counter, 1);
+                        printer(pole, 2);
                     } else {
                         if (goals(pole) == 1) {
-                            schet[0] += 1;
-                            
+                            schet[0] += 1; 
                         } else if (goals(pole) == 2) {
                             schet[1] += 1;
-                            
                         }
-                        
                     }
                 } else {
                     continue;
@@ -82,12 +85,27 @@ int main() {
     return 0;
 }
 
-// вывод игрового поля +
-//char* table() {
-//    char background [25][80]; // создание массива с фоном
- //
-//    return background;
-//}
+// вывод
+void printer (char mas [], int ind){
+    if (ind == 1) {
+        for (int i = 0; i < 2; i++){
+            for (int j = 0; j < 80; j++)
+            {
+                printf("%d", mas[i][&j]);
+            }
+            printf('\n');   
+        }
+    } else {
+        for (int i = 0; i < 25; i++){
+            for (int j = 0; j < 80; j++)
+            {
+                printf("%d", mas[i][&j]);
+            }
+            printf('\n');   
+        }
+    }
+}
+
 
 // функция передвижения ракеток 
 char* rocket(char input, char *mas) {
