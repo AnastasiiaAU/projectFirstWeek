@@ -11,8 +11,8 @@ int main() {
     char comand, n; // comand - пользовательский ввод команд, n - переменная для проверки ввода одного символа
     int schet [] = {0, 0}; // счет
     int win_numb = 0; //победитель
-    char hl = '-', rl = '+'; // движение мяча
-                                                                                                                                                        // добавить вывод счета над таблицей
+    char hl = '-', rl = '-'; // движение мяча
+                                                                                                                                                        // добавить вывод счета над таблицей и момент переключения направления движения мяча
     while (win_numb == 0) {
         char pole[25][80] = table(); // инициализация игрового поля
         if (scanf("%c", &comand, &n) && n == '\n') {
@@ -143,6 +143,8 @@ char* ball(char *mas, char highlow, char rightltft) {
 
     } else if ((ball_y == 38 && rightltft == '+') || (ball_y == 40 && rightltft == '-')){ // если должен попасть на линию по середине 
 
+    } else {
+
     }
 
 }
@@ -193,21 +195,28 @@ int stolknovenie (char *mas, char highlow, char rightltft, int x, int y) {
 
 // непосредственно перемещение мяча по полю 
 char* ball_move(char *mas, char highlow, char rightltft, int x, int y) {
-    
-    if (highlow == "+") {
-        if (rightltft == "+") { //движение выше-правее
-                
-        } else if (rightltft == "-") { //движение выше-левее
+    if (stolknovenie(mas, highlow, rightltft, x, y) == 0) { //если столкнвения не предвидится
+        if (highlow == "+") {
+            if (rightltft == "+") { //движение выше-правее
+                // проверяем на то, не вылетит ли за границы мяч при перестановке
 
+            } else if (rightltft == "-") { //движение выше-левее
+
+
+            }
+        } else if (highlow == "-") { 
+            if (rightltft == "+") { //движение ниже-правее
+
+
+            } else if(rightltft == "-") { //движение ниже-левее
+
+
+            }
+        } else {
+            return mas;
         }
-    } else if (highlow == "-") { 
-        if (rightltft == "+") { //движение ниже-правее
-
-        } else if(rightltft == "-") { //движение ниже-левее
-
-        }
-    } else {
-        return mas;
+    } else { // если будет столкновение
+        
     }
 }
 
