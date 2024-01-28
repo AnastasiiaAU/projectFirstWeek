@@ -15,7 +15,7 @@ int main() {
     int win_numb = 0; //победитель
     char hl = '-', rl = '-'; // движение мяча
     char pole[25][80] = table(); // инициализация игрового поля
-                                                                                                                                                        // добавить вывод счета над таблицей и момент переключения направления движения мяча
+                                                                                                                                                        // добавить вывод счета над таблицей и проверить места, в которых чистится поле
     while (win_numb == 0) {
         char pole[25][80] = table(); // инициализация игрового поля
         if (scanf("%c", &comand, &n) && n == '\n') {
@@ -37,8 +37,10 @@ int main() {
                 } else {
                     if (goals(pole) == 1) {
                         schet[0] += 1;
+                        clear();
                     } else if (goals(pole) == 2) {
                         schet[1] += 1;
+                        clear();
                     }
                     if (schet[0] == 21 || schet[1] == 21) {
                         if (schet[0] == 21) {
@@ -57,7 +59,7 @@ int main() {
             continue;
         }
     }
-    printf("Player %d wins!", &win_numb); //вывод того, кто победил
+    printf("CONGRATULATIONS! PLAYER %d WIN!", &win_numb); //вывод того, кто победил
     return 0;
 }
 
